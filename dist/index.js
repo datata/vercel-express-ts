@@ -12,6 +12,9 @@ app.get('/', (__req, res) => {
 app.get('/healthy', (__req, res) => {
     return res.send('Healthy');
 });
+app.get('/products', (__req, res) => {
+    return res.send('All Products');
+});
 app.listen(PORT, () => {
     console.log("Server running on port:" + PORT);
 });
