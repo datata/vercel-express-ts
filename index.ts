@@ -1,21 +1,21 @@
-import express, { Request, Response } from 'express';
+import express, { type Request, type Response } from "express";
 
 const app = express();
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT ?? 4000;
 
-app.get('/', (__req: Request, res: Response) => {
-    return res.send('Welcome to my app')
+app.get("/", (req: Request, res: Response) => {
+	return res.send("Welcome to my app");
 });
 
-app.get('/healthy', (__req: Request, res: Response) => {
-    return res.send('Healthy')
+app.get("/healthy", (req: Request, res: Response) => {
+	return res.send("Healthy");
 });
 
-app.get('/products', (__req: Request, res: Response) => {
-    return res.send('All Products')
+app.get("/products", (req: Request, res: Response) => {
+	return res.send("All Products");
 });
 
 app.listen(PORT, () => {
-    console.log("Server running on port:" + PORT);
-})
+	console.log(`Server running on port: ${PORT}`);
+});
