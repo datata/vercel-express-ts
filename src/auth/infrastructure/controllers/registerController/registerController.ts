@@ -8,21 +8,27 @@ interface User {
 	email: string | undefined | null;
 }
 
+const registerUserRequestValidation = (requestBody: User) => {
+	if (!requestBody.name) {
+		throw new UserError("User Name is required");
+	}
+
+	if (!requestBody.email) {
+		throw new UserError("User email is required");
+	}
+
+	if (!requestBody.password) {
+		throw new UserError("User password is required");
+	}
+
+	return true;
+};
+
 export const register = (req: Request, res: Response): Response => {
 	try {
 		const { name, password, email } = req.body as User;
 
-		if (name === "" || name === undefined || name === null) {
-			throw new UserError("User Name is required");
-		}
-
-		if (email === "" || email === undefined || email === null) {
-			throw new UserError("User email is required");
-		}
-
-		if (password === "" || password === undefined || password === null) {
-			throw new UserError("User password is required");
-		}
+		registerUserRequestValidation({ name, password, email });
 
 		return res.status(201).json({
 			success: true,
@@ -35,26 +41,10 @@ export const register = (req: Request, res: Response): Response => {
 		});
 	} catch (error) {
 		if (error instanceof UserError) {
-			if (error.message === "User Name is required") {
-				return res.status(404).json({
-					success: false,
-					message: "User Name is required",
-				});
-			}
-
-			if (error.message === "User email is required") {
-				return res.status(404).json({
-					success: false,
-					message: "User Name is required",
-				});
-			}
-
-			if (error.message === "User password is required") {
-				return res.status(404).json({
-					success: false,
-					message: "User Name is required",
-				});
-			}
+			return res.status(400).json({
+				success: false,
+				message: error.message,
+			});
 		}
 
 		return res.status(201).json({
